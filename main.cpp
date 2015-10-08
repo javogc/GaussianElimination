@@ -1,3 +1,12 @@
+// Eliminacion Gaussian
+//
+// Alejandro de la Rosa Cortes A01381412
+//
+//
+//
+// 8 de octubre 2015
+
+
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -69,7 +78,7 @@ void solucion(vector<vector<double>> const &dMatriz, int iEcuaciones, int iVaria
             }
             else
             {
-                int iSuma = 0;
+                double iSuma = 0;
                 for(int j = i + 1; j < iVariables; j++)
                 {
                     iSuma += dMatriz[i][j] * arrDSoluciones[j];
@@ -90,56 +99,53 @@ int main()
     int iEcuaciones;
     int iVariables;
     bool bNumeroCorrecto = false;
-
-    // Pide el numero de ecuaciones y de incognitas, valida que sean iguales.
-    while(!bNumeroCorrecto)
+    char cRespuesta;
+    do
     {
-        cout << "Cuantas ecuaciones tiene el sistema? ";
-        cin >> iEcuaciones;
-        cout << "Cuantas incognitas tiene el sistema? ";
-        cin >> iVariables;
-
-        if(iEcuaciones == iVariables)
-            bNumeroCorrecto = true;
-        else
+        // Pide el numero de ecuaciones y de incognitas, valida que sean iguales.
+        while(!bNumeroCorrecto)
         {
-            cout << "Por favor ingrese otra vez, numero de ecuaciones tiene que " << endl;
-            cout << "ser igual al numero de incógnitas" << endl;
-        }
-    }
+            cout << "Cuantas ecuaciones tiene el sistema? ";
+            cin >> iEcuaciones;
+            cout << "Cuantas incognitas tiene el sistema? ";
+            cin >> iVariables;
 
-    // vector de vectores de enteros para guardar los datos
-    vector<vector<double>> dMatriz(iEcuaciones, vector<double>(iVariables + 1));
-
-    for(int i = 0; i < iEcuaciones; i++)
-    {
-        for(int j = 0; j <= iVariables; j++)
-        {
-            double dNumero;
-
-            if(j < iVariables)
-                cout << "Cual es el coeficiente de X" << j + 1 << "? ";
+            if(iEcuaciones == iVariables)
+                bNumeroCorrecto = true;
             else
-                cout << "Cual es el resultado de la ecuacion " << i + 1 << "? ";
-
-            cin >> dNumero;
-
-            dMatriz[i][j] = dNumero;
+            {
+                cout << "Por favor ingrese otra vez, numero de ecuaciones tiene que " << endl;
+                cout << "ser igual al numero de incógnitas" << endl;
+            }
         }
-    }
 
-    trianguloInferior(dMatriz);
+        // vector de vectores de enteros para guardar los datos
+        vector<vector<double>> dMatriz(iEcuaciones, vector<double>(iVariables + 1));
 
-    for(int i = 0; i < iEcuaciones; i++)
-    {
-        for(int j = 0; j <= iVariables; j++)
+        for(int i = 0; i < iEcuaciones; i++)
         {
-            cout << setw(3) << dMatriz[i][j] << ' ';
-        }
-        cout << endl;
-    }
+            for(int j = 0; j <= iVariables; j++)
+            {
+                double dNumero;
 
-    solucion(dMatriz, iEcuaciones, iVariables);
+                if(j < iVariables)
+                    cout << "Cual es el coeficiente de X" << j + 1 << "? ";
+                else
+                    cout << "Cual es el resultado de la ecuacion " << i + 1 << "? ";
+
+                cin >> dNumero;
+
+                dMatriz[i][j] = dNumero;
+            }
+        }
+
+        trianguloInferior(dMatriz);
+        solucion(dMatriz, iEcuaciones, iVariables);
+
+        cout << "Quieres resolver otro sistema? y/n ";
+        cin >> cRespuesta;
+    }
+    while (cRespuesta == 'y' || cRespuesta == 'Y');
 
     return 0;
 }
