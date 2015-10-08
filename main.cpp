@@ -1,11 +1,11 @@
 // Eliminacion Gaussian
 //
 // Alejandro de la Rosa Cortes A01381412
+// Oscar Armando Leal Marcos   A00816227
+// Javier Guajardo Canseco
 //
-//
-//
+// Métodos Numéricos
 // 8 de octubre 2015
-
 
 #include <iostream>
 #include <iomanip>
@@ -27,6 +27,7 @@ void intercambioRenglon(vector<vector<double>> &dMatriz, int iRen1, int iRen2)
     }
 }
 
+//va haciendo ceros el triangulo inferior, recalculando las ecuaciones
 void trianguloInferior(vector<vector<double>> &dMatriz)
 {
     for(int i = 0; i < dMatriz.size() - 1; i++)
@@ -34,6 +35,7 @@ void trianguloInferior(vector<vector<double>> &dMatriz)
         for(int j = i + 1; j < dMatriz.size(); j++)
         {
             int iIndex = j;
+            //intercambia renglón si es necesario (para no dividir entre 0)
             while(i < dMatriz.size() && dMatriz[i][i] == 0)
             {
                 intercambioRenglon(dMatriz, i, iIndex);
@@ -57,6 +59,7 @@ void trianguloInferior(vector<vector<double>> &dMatriz)
 
 void solucion(vector<vector<double>> const &dMatriz, int iEcuaciones, int iVariables)
 {
+    //Checa si se trata de un sistema con soluciones infinitas, o tiene soluciones imaginarias
     if (dMatriz[iEcuaciones - 1][iVariables - 1] == 0)
     {
         if(dMatriz[iEcuaciones - 1][iVariables] == 0)
@@ -66,6 +69,7 @@ void solucion(vector<vector<double>> const &dMatriz, int iEcuaciones, int iVaria
     }
     else
     {
+        //Calcula soluciones del sistema
         double arrDSoluciones[iVariables];
 
         cout << "Soluciones del sistema: " << endl;
@@ -96,32 +100,23 @@ void solucion(vector<vector<double>> const &dMatriz, int iEcuaciones, int iVaria
 
 int main()
 {
-    int iEcuaciones;
-    int iVariables;
-    bool bNumeroCorrecto = false;
+    int iEcuaciones, iVariables;
     char cRespuesta;
+
     do
     {
-        // Pide el numero de ecuaciones y de incognitas, valida que sean iguales.
-        while(!bNumeroCorrecto)
-        {
-            cout << "Cuantas ecuaciones tiene el sistema? ";
-            cin >> iEcuaciones;
-            cout << "Cuantas incognitas tiene el sistema? ";
-            cin >> iVariables;
+        // Pide el numero de ecuaciones y de incognitas, que es el mismo.
+        cout << "Ingresa el numero de ecuaciones e incognitas que tendra el sistema\n(tiene que ser el mismo) ";
+        cin >> iEcuaciones;
 
-            if(iEcuaciones == iVariables)
-                bNumeroCorrecto = true;
-            else
-            {
-                cout << "Por favor ingrese otra vez, numero de ecuaciones tiene que " << endl;
-                cout << "ser igual al numero de incógnitas" << endl;
-            }
-        }
+        iVariables = iEcuaciones;
 
         // vector de vectores de enteros para guardar los datos
         vector<vector<double>> dMatriz(iEcuaciones, vector<double>(iVariables + 1));
 
+
+        // Pide los coeficientes de las variables de cada una de las ecuaciones y el resultado
+        //      de cada una de ellas mismas.
         for(int i = 0; i < iEcuaciones; i++)
         {
             for(int j = 0; j <= iVariables; j++)
@@ -135,6 +130,7 @@ int main()
 
                 cin >> dNumero;
 
+                //Llena la matriz de sistema de ecuaciones
                 dMatriz[i][j] = dNumero;
             }
         }
